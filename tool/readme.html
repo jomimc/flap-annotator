@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flap annotator: instructions</title>
+<style>
+  body { background: #1d2025; color: #e4e6e9; font: 16px/1.55 system-ui, sans-serif; margin: 0; padding: 24px 16px 64px; }
+  main { max-width: 820px; margin: 0 auto; overflow-wrap: anywhere; }
+  h1, h2, h3 { line-height: 1.25; margin: 1.6em 0 .5em; }
+  h1 { margin-top: 0; }
+  h2 { border-bottom: 1px solid #3a3f47; padding-bottom: .25em; }
+  a { color: #7db8ff; }
+  code, pre { background: #2a2e35; border-radius: 4px; font: 14px ui-monospace, monospace; }
+  code { padding: 1px 4px; }
+  pre { padding: 10px 12px; overflow-x: auto; white-space: pre-wrap; }
+  pre code { padding: 0; background: none; }
+  table { border-collapse: collapse; margin: 1em 0; }
+  th, td { border: 1px solid #3a3f47; padding: 4px 10px; text-align: left; }
+</style>
+</head>
+<body>
+<main id="doc">Loading the instructions...</main>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+(async () => {
+  const doc = document.getElementById("doc");
+  let text;
+  try {
+    const r = await fetch("../README.md", { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    text = await r.text();
+  } catch (e) { doc.textContent = "Could not load the instructions (" + e + ")."; return; }
+  if (window.marked) doc.innerHTML = marked.parse(text);
+  else { const p = document.createElement("pre"); p.textContent = text; doc.replaceChildren(p); }   // formatter unavailable: plain text
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flap annotator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loader">
+  <div class="card">
+    <h2>Flap annotator</h2>
+    <div id="ld-unsupported" class="ldmsg" style="display:none"></div>
+    <div id="ld-pick">
+      <p>Choose the round folder you downloaded. The page will tell you what it found before you start.</p>
+      <button id="ld-choose">Choose round folder</button>
+    </div>
+    <div id="ld-report" style="display:none"></div>
+    <p><a href="readme.html" target="_blank" rel="noopener">Instructions (opens in a new tab)</a></p>
+  </div>
+</div>
+<header id="hdr">
+  <span class="title">Flap annotator</span><a id="h-help" href="readme.html" target="_blank" rel="noopener">Instructions</a><span id="h-round"></span>
+  <span id="h-session"></span>
+  <span id="h-time"></span>
+  <span id="h-clip"></span>
+  <span id="h-prior" class="state prior" style="display:none">loaded from previous round</span>
+  <span id="h-state" class="state"></span>
+</header>
+
+<main>
+  <section id="left">
+    <div id="stage">
+      <div id="zoomwrap">
+        <video id="vid" muted playsinline preload="auto"></video>
+        <canvas id="boxov"></canvas>
+      </div>
+      <div id="zrect"></div>
+      <canvas id="inset" width="300" height="300"></canvas>
+    </div>
+    <div id="vctl">
+      <button id="b-play" title="K">Play</button>
+      <button id="b-back" title="Q">&#9664; frame</button>
+      <button id="b-fwd" title="E">frame &#9654;</button>
+      <span class="grp" id="speeds">
+        <button data-r="0.1" title="1">0.1&times;</button><button data-r="0.25" title="2">0.25&times;</button><button data-r="0.5" title="3">0.5&times;</button><button data-r="1" title="4" class="on">1&times;</button>
+      </span>
+      <label><input type="checkbox" id="c-loop"> loop clip</label>
+      <button id="b-zreset" title="drag on the image to zoom, right click to step back one zoom level">Reset zoom</button>
+    </div>
+  </section>
+
+  <aside id="side">
+    <h3>Keys</h3>
+    <table id="keys">
+      <tr><td>Q / E</td><td>frame back / forward</td></tr>
+      <tr><td>Space</td><td>add / remove a mark on the displayed frame</td></tr><tr><td>K</td><td>play / pause</td></tr>
+      <tr><td>1 2 3 4</td><td>speed 0.1 / 0.25 / 0.5 / 1&times;</td></tr>
+      <tr><td>F</td><td>add a mark at the shown frame</td></tr>
+      <tr><td>D</td><td>delete the nearest mark</td></tr>
+      <tr><td>N / P</td><td>next / previous clip</td></tr>
+      <tr><td>U</td><td>toggle "unsure" on the mark nearest the playhead</td></tr>
+      <tr><td>Ctrl+Z</td><td>undo</td></tr>
+    </table>
+    <p class="note2"><b>Clear all</b> removes every mark of the clip; Undo / Ctrl+Z brings them back. Unsure marks are drawn as hollow diamonds. Greyed parts of the strip are outside the windows.</p>
+    <h3>Clips</h3>
+    <div id="clipnav"><button id="b-prev" title="P">&laquo; prev</button><button id="b-next" title="N">next &raquo;</button></div>
+    <ul id="cliplist"></ul>
+    <button id="b-export" title="download one CSV with every saved clip of this round">Export all</button>
+  </aside>
+</main>
+
+<section id="edit">
+  <span class="grp">
+    <button id="m-add" class="tog" title="left click adds a mark, right click deletes the nearest">Add / Delete</button>
+    <button id="m-move" class="tog" title="drag a mark">Move</button>
+    <span class="hint" id="modehint">click on the strip: jump to that time</span><b id="flash"></b>
+  </span>
+  <span class="grp"><button id="b-undo" title="Ctrl+Z">Undo</button><button id="b-clear" title="remove all marks of this clip (Undo brings them back)">Clear all</button></span>
+  <label title="ticked: click start, click end to add a window; drag an edge; right click inside a window removes it"><input type="checkbox" id="c-win"> Edit windows</label>
+  <label>Confidence <select id="conf"><option value="high">high</option><option value="low">low</option></select></label>
+  <label class="note">Note <input type="text" id="note" size="40"></label>
+  <span class="grp"><button id="b-save">Save</button><button id="b-done">Mark as done</button><button id="b-unus" title="the clip cannot be judged: saved as unusable and done">Unusable clip</button></span>
+</section>
+
+<div id="instr"></div>
+<div id="warns"><div id="w-close" class="warn"></div><div id="w-out" class="warn"></div></div>
+<section id="lanes">
+  <div id="labels"></div>
+  <canvas id="lc"></canvas>
+</section>
+<div id="tip"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

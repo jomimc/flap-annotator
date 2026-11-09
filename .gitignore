@@ -1,0 +1,13 @@
+# annotation outputs
+annotations_*/
+annotations/
+*.json.bak
+.*.tmp
+# videos and round folders are shared directly, never through this repository
+*.mp4
+rounds/
+# the click-through test needs a local round folder
+tests/
+# keys carry tag/lag information and must never be committed
+keys/
+__pycache__/
